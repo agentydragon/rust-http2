@@ -334,7 +334,10 @@ impl ClientConn {
             connector
                 .connect_with_socket(&domain, socket)
                 .await
-                .map_err(crate::Error::from)
+                .map_err(|e| {
+                    println!("ERROR: {}", e);
+                    crate::Error::from(e)
+                })
         };
 
         ClientConn::spawn_connected(lh, tls_conn, addr_struct, conf, callbacks)
